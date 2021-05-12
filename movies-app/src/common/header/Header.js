@@ -12,7 +12,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import PropTypes from 'prop-types';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Home from '../../screens/home/Home';
 import BookShow from '../../screens/bookshow/BookShow';
 
 const customStyles = {
@@ -130,7 +129,7 @@ class Header extends Component {
 
     bookshowHandler = () => {
         ReactDOM.render(
-        <BookShow/>,
+        <BookShow />,
         document.getElementById('root')
     );
 
