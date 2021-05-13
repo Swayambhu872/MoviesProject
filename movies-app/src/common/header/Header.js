@@ -129,7 +129,7 @@ class Header extends Component {
 
     bookshowHandler = () => {
         ReactDOM.render(
-        <BookShow />,
+        <BookShow movieId={this.props.movieId} />,
         document.getElementById('root')
     );
 

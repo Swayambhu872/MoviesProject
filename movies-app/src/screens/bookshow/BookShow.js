@@ -15,44 +15,68 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { Input, MenuItem } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Confirmation from '../../screens/confirmation/Confirmation';
+
 
 
 
 
 class BookShow extends Component {
-constructor() {
-    super();
+    constructor() {
+        super();
 
-    this.state = {
-        location: "",
-        language: "",
-        showDate: "",
-        showTime: "",
-        tickets: 0,
-        unitPrice: 500,
-        availableTickets: 20
+        this.state = {
+            location: "",
+            language: "",
+            showDate: "",
+            showTime: "",
+            tickets: 0,
+            unitPrice: 500,
+            availableTickets: 20,
+            reqLocation: "dispNone",
+            reqLanguage: "dispNone",
+            reqShowDate: "dispNone",
+            reqShowTime: "dispNone",
+            reqTickets: "dispNone"
+        }
     }
-}
     backToDetailsHandler = () => {
         ReactDOM.render(
-            <Details movieId={this.props.movieId}/>,
+            <Details movieId={this.props.movieId} />,
             document.getElementById('root')
         );
     }
     locationChangeHandler = event => {
-        this.setState({location: event.target.value});
+        this.setState({ location: event.target.value });
     }
     languageChangeHandler = (event) => {
-        this.setState({language: event.target.value});
+        this.setState({ language: event.target.value });
     }
-    dateChangeHandler=(event) => {
-        this.setState({showDate:event.target.value})
+    dateChangeHandler = (event) => {
+        this.setState({ showDate: event.target.value })
     }
     timeChangeHandler = event => {
-            this.setState({showTime:event.target.value})
+        this.setState({ showTime: event.target.value })
     }
-    ticketsChangeHandler =event =>{
-            this.setState({tickets:event.target.value})
+    ticketsChangeHandler = event => {
+        this.setState({ tickets: event.target.value })
+    }
+    bookShowButtonHandler = () => {
+        this.state.location === "" ? this.setState({ reqLocation: "dispBlock" }) : this.setState({ reqLocation: "dispNone" });
+        this.state.language === "" ? this.setState({ reqLanguage: "dispBlock" }) : this.setState({ reqLanguage: "dispNone" });
+        this.state.showDate === "" ? this.setState({ reqShowDate: "dispBlock" }) : this.setState({ reqShowDate: "dispNone" });
+        this.state.showTime === "" ? this.setState({ reqShowTime: "dispBlock" }) : this.setState({ reqShowTime: "dispNone" });
+        this.state.tickets === 0 ? this.setState({ reqTickets: "dispBlock" }) : this.setState({ reqTickets: "dispNone" });
+        if ((this.state.location === "") || (this.state.theatre === "") || (this.state.language === "") || (this.state.showDate === "") || (this.state.tickets === 0)) { 
+            return; 
+        } else {
+            ReactDOM.render(
+                <Confirmation bookingSummary={this.state}/>,
+                document.getElementById('root')
+            );
+        }
+
     }
     render() {
         return (
@@ -67,78 +91,93 @@ constructor() {
                             <Typography variant="headline" component="h2">
                                 BOOK SHOW
                     </Typography><br />
-                    <FormControl required className="formControl">
-                        <InputLabel htmlFor="location">Choose Location: </InputLabel>
-                        <Select
-                        value={this.state.location}
-                        onChange={this.locationChangeHandler}>
-                        {
-                            location.map(loc => (
+                            <FormControl required className="formControl">
+                                <InputLabel htmlFor="location">Choose Location: </InputLabel>
+                                <Select
+                                    value={this.state.location}
+                                    onChange={this.locationChangeHandler}>
+                                    {
+                                        location.map(loc => (
 
-                                <MenuItem key={"loc" +loc.id} value={loc.location}>
-                                    {loc.location}
-                                </MenuItem>
-                            ))
-                        }
-                        </Select>
-                    </FormControl><br/><br/>
-                    <FormControl required className="formControl">
-                        <InputLabel htmlFor="location">Choose Language: </InputLabel>
-                        <Select
-                        value={this.state.language}
-                        onChange={this.languageChangeHandler}>
-                        {
-                            language.map(lang => (
+                                            <MenuItem key={"loc" + loc.id} value={loc.location}>
+                                                {loc.location}
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                                <FormHelperText className={this.state.reqLocation}>
+                                    <span className="red">Required</span>
+                                </FormHelperText>
+                            </FormControl><br /><br />
+                            <FormControl required className="formControl">
+                                <InputLabel htmlFor="location">Choose Language: </InputLabel>
+                                <Select
+                                    value={this.state.language}
+                                    onChange={this.languageChangeHandler}>
+                                    {
+                                        language.map(lang => (
 
-                                <MenuItem key={"lang" +lang.id} value={lang.language}>
-                                    {lang.language}
-                                </MenuItem>
-                            ))
-                        }
-                        </Select>
-                    </FormControl><br/><br/>
-                    <FormControl required className="formControl">
-                        <InputLabel htmlFor="showDate">Choose Show Date: </InputLabel>
-                        <Select
-                        value={this.state.showDate}
-                        onChange={this.dateChangeHandler}>
-                        {
-                            showDate.map(date => (
+                                            <MenuItem key={"lang" + lang.id} value={lang.language}>
+                                                {lang.language}
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                                <FormHelperText className={this.state.reqLanguage}>
+                                    <span className="red">Required</span>
+                                </FormHelperText>
+                            </FormControl><br /><br />
+                            <FormControl required className="formControl">
+                                <InputLabel htmlFor="showDate">Choose Show Date: </InputLabel>
+                                <Select
+                                    value={this.state.showDate}
+                                    onChange={this.dateChangeHandler}>
+                                    {
+                                        showDate.map(date => (
 
-                                <MenuItem key={"showDate" +date.id} value={date.showDate}>
-                                    {date.showDate}
-                                </MenuItem>
-                            ))
-                        }
-                        </Select>
-                    </FormControl><br/><br/>
-                    <FormControl required className="formControl">
-                        <InputLabel htmlFor="showTime">Choose Show Time: </InputLabel>
-                        <Select
-                        value={this.state.showTime}
-                        onChange={this.timeChangeHandler}>
-                        {
-                            showTime.map(time => (
+                                            <MenuItem key={"showDate" + date.id} value={date.showDate}>
+                                                {date.showDate}
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                                <FormHelperText className={this.state.reqShowDate}>
+                                    <span className="red">Required</span>
+                                </FormHelperText>
+                            </FormControl><br /><br />
+                            <FormControl required className="formControl">
+                                <InputLabel htmlFor="showTime">Choose Show Time: </InputLabel>
+                                <Select
+                                    value={this.state.showTime}
+                                    onChange={this.timeChangeHandler}>
+                                    {
+                                        showTime.map(time => (
 
-                                <MenuItem key={"showTime" +time.id} value={time.showTime}>
-                                    {time.showTime}
-                                </MenuItem>
-                            ))
-                        }
-                        </Select>
-                    </FormControl><br/><br/>
-                    <FormControl required className="formControl">
-                    <InputLabel htmlFor="tickets">Tickets: ({this.state.availableTickets})  available</InputLabel>
-                    <Input id ="tickets" value={this.state.tickets  !== 0 ? this.state.tickets: ""} onChange={this.ticketsChangeHandler}/>
-                    </FormControl><br/><br/>
-                    <Typography>
-                        Unit Price: Rs. {this.state.unitPrice}
-                    </Typography><br/>
-                    <Typography>
-                        Total Price: Rs. {this.state.unitPrice*this.state.tickets}
-                    </Typography> <br/><br/>
-                    <Button variant="contained" onClick={this.bookShowButtonHandler} color="primary">
-                        BOOK SHOW
+                                            <MenuItem key={"showTime" + time.id} value={time.showTime}>
+                                                {time.showTime}
+                                            </MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                                <FormHelperText className={this.state.reqShowTime}>
+                                    <span className="red">Required</span>
+                                </FormHelperText>
+                            </FormControl><br /><br />
+                            <FormControl required className="formControl">
+                                <InputLabel htmlFor="tickets">Tickets: ({this.state.availableTickets})  available</InputLabel>
+                                <Input id="tickets" value={this.state.tickets !== 0 ? this.state.tickets : ""} onChange={this.ticketsChangeHandler} />
+                                <FormHelperText className={this.state.reqTickets}>
+                                    <span className="red">Required</span>
+                                </FormHelperText>
+                            </FormControl><br /><br />
+                            <Typography>
+                                Unit Price: Rs. {this.state.unitPrice}
+                            </Typography><br />
+                            <Typography>
+                                Total Price: Rs. {this.state.unitPrice * this.state.tickets}
+                            </Typography> <br /><br />
+                            <Button variant="contained" onClick={this.bookShowButtonHandler} color="primary">
+                                BOOK SHOW
                     </Button>
                         </CardContent>
                     </Card>

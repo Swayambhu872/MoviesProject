@@ -74,10 +74,7 @@ class Home extends Component {
         this.setState({artists: event.target.value});
     }
     movieClickHandler = (movieId) => {
-            ReactDOM.render(
-                <Details movieId={movieId}/>,
-                document.getElementById('root')
-            );
+        this.props.history.push('/movie/' + movieId);
     }
     render() {
         const { classes } = this.props;
